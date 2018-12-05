@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="动态规划/算法/最长公共子序列,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言动态规划（Dynamic Programming）这个词在大学的算法课上就曾学习过，但有多少人能真正把它掌握了呢？反正当时的我是一脸那啥的，光会死记硬背那些概念性的东西了。今天就让我们从一个实际问题出发，真正把动态规划的思想吃透。本文不会过多说明DP的概念，主要是结合最长公共子序列的问题用实例说明DP在解决问题上有什么优势，为什么用这种方法能提高效率。">
+<meta name="keywords" content="动态规划&#x2F;算法&#x2F;最长公共子序列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用动态规划解决最长公共子序列（LSC）问题">
+<meta property="og:url" content="http://yoursite.com/2018/12/04/LSC-DP/index.html">
+<meta property="og:site_name" content="True tech area">
+<meta property="og:description" content="前言动态规划（Dynamic Programming）这个词在大学的算法课上就曾学习过，但有多少人能真正把它掌握了呢？反正当时的我是一脸那啥的，光会死记硬背那些概念性的东西了。今天就让我们从一个实际问题出发，真正把动态规划的思想吃透。本文不会过多说明DP的概念，主要是结合最长公共子序列的问题用实例说明DP在解决问题上有什么优势，为什么用这种方法能提高效率。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/LCS_DP/LCS%E6%8C%87%E9%92%88%E5%9B%BE.jpg">
+<meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/LCS_DP/DP%E6%96%B9%E6%B3%95%E7%9A%84%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
+<meta property="og:updated_time" content="2018-12-05T02:16:04.140Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用动态规划解决最长公共子序列（LSC）问题">
+<meta name="twitter:description" content="前言动态规划（Dynamic Programming）这个词在大学的算法课上就曾学习过，但有多少人能真正把它掌握了呢？反正当时的我是一脸那啥的，光会死记硬背那些概念性的东西了。今天就让我们从一个实际问题出发，真正把动态规划的思想吃透。本文不会过多说明DP的概念，主要是结合最长公共子序列的问题用实例说明DP在解决问题上有什么优势，为什么用这种方法能提高效率。">
+<meta name="twitter:image" content="https://blog-pics.nos-eastchina1.126.net/LCS_DP/LCS%E6%8C%87%E9%92%88%E5%9B%BE.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/04/LSC-DP/">
+
+
+
+
+
+  <title>使用动态规划解决最长公共子序列（LSC）问题 | True tech area</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">True tech area</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I know you never ever give up until you make it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/04/LSC-DP/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward LU">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="True tech area">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用动态规划解决最长公共子序列（LSC）问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T15:30:33+08:00">
+                2018-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/04/LSC-DP/" class="leancloud_visitors" data-flag-title="使用动态规划解决最长公共子序列（LSC）问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>动态规划（<em>Dynamic Programming</em>）这个词在大学的算法课上就曾学习过，但有多少人能真正把它掌握了呢？反正当时的我是一脸那啥的，光会死记硬背那些概念性的东西了。今天就让我们从一个实际问题出发，真正把动态规划的思想吃透。本文不会过多说明DP的概念，主要是结合<em>最长公共子序列</em>的问题用实例说明DP在解决问题上有什么优势，为什么用这种方法能提高效率。<a id="more"></a></p>
+<h1 id="最长公共子序列问题（Longest-Common-Subsequence）"><a href="#最长公共子序列问题（Longest-Common-Subsequence）" class="headerlink" title="最长公共子序列问题（Longest Common Subsequence）"></a>最长公共子序列问题（<em>Longest Common Subsequence</em>）</h1><p>最长公共子序列指的是两个字符串最长的相同部分，而不必是连续的。举个例子，有两个字符串A和B：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> A = <span class="string">"ABCD"</span>;</span><br><span class="line"><span class="built_in">string</span> B = <span class="string">"AKCD"</span>;</span><br></pre></td></tr></table></figure>
+<p>那么A和B的LCS为<strong><code>ACD</code></strong>。<br>最长公共子序列和最长公共子串的区别在于：子序列不必是连续的，而子串必须是，所以上例中的最长公共子串是<strong><code>CD</code></strong>。</p>
+<h2 id="一般思路"><a href="#一般思路" class="headerlink" title="一般思路"></a>一般思路</h2><h3 id="两种情况"><a href="#两种情况" class="headerlink" title="两种情况"></a>两种情况</h3><p>解决LSC问题需要用到递归，这里用<em>LCS（s1，s2）</em>表示字符串s1和s2的最长公共子序列。还是上面的两个字符串A和B，要找到最长公共子序列，即<em>LCS(“ABCD”, “AKCD”)</em>，首先要比较两个字符串的第一个字符是否相同，这里显然是相同的，都是 <code>&#39;A&#39;</code>, 这样二者的最长公共子序列就变成了：<code>&#39;A&#39;</code> + <em>LCS(“BCD”, “KCD”)</em>;<br>接下来，<code>&#39;BCD&#39;</code>, <code>&#39;KCD&#39;</code>的首字母不同了，这种情况下要分别求出<em>LCS(“CD”, “KCD”)</em>和<em>LCS(“BCD”, “CD”)</em>，然后取二者中最长的那个作为结果。然后继续递归直到字符串为空，即可找出A和B的LCS了。</p>
+<h3 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h3><p>不过需要优化的地方在于：每次计算子串的LCS时都要生成新字符串，这样很浪费空间，可以给LCS方法加两个参数i1，i2，分别表示指向s1，s2当前比较到的字符，如LCS(“ABCD”, “AKCD”, 0, 0)表示从头开始比较：<br><img src="https://blog-pics.nos-eastchina1.126.net/LCS_DP/LCS%E6%8C%87%E9%92%88%E5%9B%BE.jpg" width="30%" height="30%"><br>如此，便不难写出如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">LCS</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> lcs = helper(s1, s2, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> lcs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">helper</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2, <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> i1, <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> i2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 如果字符串为空，直接返回空串</span></span><br><span class="line">    <span class="keyword">if</span> (s1.length() == i1 || s2.length() == i2) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果比较的第一个字母相同，递归返回第一个字母加后面剩余的最长公共子序列</span></span><br><span class="line">    <span class="keyword">if</span> (s1[i1] == s2[i2]) &#123;</span><br><span class="line">        <span class="keyword">return</span> s1[i1] + helper(s1, s2, i1 + <span class="number">1</span>, i2 + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果不同，返回下面两种结果中较长的一个</span></span><br><span class="line">    <span class="built_in">string</span> result;</span><br><span class="line">    <span class="built_in">string</span> resultA = helper(s1, s2, i1 + <span class="number">1</span>, i2);</span><br><span class="line">    <span class="built_in">string</span> resultB = helper(s1, s2, i1, i2 + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (resultA.length() &gt;= resultB.length())</span><br><span class="line">        result = resultA;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        result = resultB;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h3><p>上述解法的确能够得到正确答案，但由于多次对相同的字符串进行递归计算LCS（既然这样，为什么我们不把中间计算过的结果记录下来呢？），从时间效率上来讲是很低的，在两个字符串很短的时候不会很明显，但如果一旦遇到两个稍长的字符串，等待时间将会很漫长，故这不是一种好的方法。如此我们便引入了动态规划，减少计算量，提高效率。</p>
+<h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><h2 id="为什么要用动态规划"><a href="#为什么要用动态规划" class="headerlink" title="为什么要用动态规划"></a>为什么要用动态规划</h2><p>我们可以看到，在求解LCS问题时，初始问题会转化成更小的“子问题”，而“子问题”的解决方法和初始问题以及子问题的子问题都是一样的，这种性质称之为 <strong>“重叠子问题”</strong> ，即是说每一个子问题并不是新的问题，而是解决方法完全一样的仅仅是规模不一样的问题；<br>另外，在求解LCS的过程中，能够利用相同字符连接上剩余字符串的最长公共子序列，这样来得到最终答案，这一性质又被称作 <strong>“最优子结构”</strong> ；<br>而具有以上两种性质的问题，最适合的算法就是“动态规划”，下面，我们就来用动态规划来对此问题进行优化。</p>
+<h2 id="动态规划算法的核心"><a href="#动态规划算法的核心" class="headerlink" title="动态规划算法的核心"></a>动态规划算法的核心</h2><p>有一句话很好地描述出了该算法的核心：</p>
+<blockquote>
+<p>Those who cannot remember the past are condemned to repeat it.</p>
+</blockquote>
+<p>在<a href="https://blog.csdn.net/u013309870/article/details/75193592" target="_blank" rel="noopener">一位大牛的博客</a>上看到过一个很形象的比喻：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">A * &quot;1+1+1+1+1+1+1+1 =？&quot; *</span><br><span class="line"></span><br><span class="line">A : &quot;上面等式的值是多少&quot;</span><br><span class="line">B : *计算* &quot;8!&quot;</span><br><span class="line"></span><br><span class="line">A *在上面等式的左边写上 &quot;1+&quot; *</span><br><span class="line">A : &quot;此时等式的值为多少&quot;</span><br><span class="line">B : *quickly* &quot;9!&quot;</span><br><span class="line">A : &quot;你怎么这么快就知道答案了&quot;</span><br><span class="line">A : &quot;只要在8的基础上加1就行了&quot;</span><br><span class="line">A : &quot;所以你不用重新计算因为你记住了第一个等式的值为8!动态规划算法也可以说是 &apos;记住求过的解来节省时间&apos;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>所以动态规划的核心就是把需要重复计算的耗时操作记录下来，即记录<em><em>已经解决过的子问题的解</em></em>。</p>
+<h2 id="优化代码"><a href="#优化代码" class="headerlink" title="优化代码"></a>优化代码</h2><p>按照这个思路，我们可以对以上的代码进行如下优化。</p>
+<ul>
+<li>定义一个二维的字符串数组memo，维数为s1.length() ✖️ s2.length()，将其添加到helper函数的参数中；</li>
+<li>在每次计算LCS操作前，先到memo数组中找是否已经存在该结果，如果存在直接返回该结果，如果不存在，则先计算结果并把结果保存到memo相应的位置，再返回该结果。</li>
+</ul>
+<p>这样一来，便可以省去很多重复计算子问题的时间。<br>下面是用动态规划方法优化后的代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">LCS</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化一个二维string数组</span></span><br><span class="line">    <span class="built_in">string</span> **memo = <span class="keyword">new</span> <span class="built_in">string</span>*[s1.length()];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">long</span> i = <span class="number">0</span>; i &lt; s1.length(); ++i)</span><br><span class="line">        memo[i] = <span class="keyword">new</span> <span class="built_in">string</span>[s2.length()];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">string</span> lcs = helper_DP(s1, s2, <span class="number">0</span>, <span class="number">0</span>， memo);</span><br><span class="line">    <span class="keyword">return</span> lcs;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">helper_DP</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2, <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> i1, <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> i2, <span class="built_in">string</span> **memo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 如果字符串为空，直接返回空串</span></span><br><span class="line">    <span class="keyword">if</span> (s1.length() == i1 || s2.length() == i2) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果结果已经在memo中，无需再次计算，直接返回</span></span><br><span class="line">    <span class="keyword">if</span> (!memo[i1][i2].empty())</span><br><span class="line">        <span class="keyword">return</span> memo[i1][i2];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果比较的第一个字母相同，递归返回第一个字母加后面剩余的最长公共子序列</span></span><br><span class="line">    <span class="keyword">if</span> (s1[i1] == s2[i2]) &#123;</span><br><span class="line">        memo[i1][i2] = s1[i1] + helper_DP(s1, s2, i1 + <span class="number">1</span>, i2 + <span class="number">1</span>, memo);</span><br><span class="line">        <span class="keyword">return</span> memo[i1][i2];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果不同，返回下面两种结果中较长的一个</span></span><br><span class="line">    <span class="built_in">string</span> result;</span><br><span class="line">    <span class="built_in">string</span> resultA = helper_DP(s1, s2, i1 + <span class="number">1</span>, i2, memo);</span><br><span class="line">    <span class="built_in">string</span> resultB = helper_DP(s1, s2, i1, i2 + <span class="number">1</span>, memo);</span><br><span class="line">    <span class="keyword">if</span> (resultA.length() &gt;= resultB.length())</span><br><span class="line">        result = resultA;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        result = resultB;</span><br><span class="line">    <span class="comment">// 先保存结果，再返回</span></span><br><span class="line">    memo[i1][i2] = result;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试程序：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> one = <span class="string">"I've been waiting for you for too long"</span>;</span><br><span class="line">    <span class="built_in">string</span> two = <span class="string">"I was waiting for you for so long"</span>;</span><br><span class="line">    <span class="built_in">string</span> lcs = LCS(one, two);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"It's "</span> &lt;&lt; lcs &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><img src="https://blog-pics.nos-eastchina1.126.net/LCS_DP/DP%E6%96%B9%E6%B3%95%E7%9A%84%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg"><br><strong>注：</strong>利用动态规划的运行时间很快，但如果用第一种方法，运行这个需要计算很长时间，有兴趣的可以自己试一下。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在工作的过程中，由于基本都是一些业务流程上的开发，很少会用到算法，动态规划就更未曾使用过。但是算法在某些时候解决一些具有特定性质的问题时，确实是很有威力的，而一些看似很复杂的算法其实本质上都来源于生活中简单的道理，多了解一些算法，就相当于更了解生活，何乐而不为呢？</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://www.youtube.com/watch?v=4SP_AY7GGxw&amp;list=PLMK6fRb_qvYiMbz_Yzd0hvS99YiBi-0Ck&amp;t=1293s&amp;index=3" target="_blank" rel="noopener">CS Dojo</a><br><a href="https://blog.csdn.net/u013309870/article/details/75193592" target="_blank" rel="noopener">https://blog.csdn.net/u013309870/article/details/75193592</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/动态规划-算法-最长公共子序列/" rel="tag"># 动态规划/算法/最长公共子序列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/19/BST/" rel="next" title="二叉搜索树初探（BST）">
+                <i class="fa fa-chevron-left"></i> 二叉搜索树初探（BST）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MDg0OC8xNzM3Mw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Edward LU">
+            
+              <p class="site-author-name" itemprop="name">Edward LU</p>
+              <p class="site-description motion-element" itemprop="description">The bottle of wine in my heart.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最长公共子序列问题（Longest-Common-Subsequence）"><span class="nav-number">2.</span> <span class="nav-text">最长公共子序列问题（Longest Common Subsequence）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一般思路"><span class="nav-number">2.1.</span> <span class="nav-text">一般思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两种情况"><span class="nav-number">2.1.1.</span> <span class="nav-text">两种情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化方法"><span class="nav-number">2.1.2.</span> <span class="nav-text">优化方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存在问题"><span class="nav-number">2.1.3.</span> <span class="nav-text">存在问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态规划"><span class="nav-number">3.</span> <span class="nav-text">动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要用动态规划"><span class="nav-number">3.1.</span> <span class="nav-text">为什么要用动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态规划算法的核心"><span class="nav-number">3.2.</span> <span class="nav-text">动态规划算法的核心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化代码"><span class="nav-number">3.3.</span> <span class="nav-text">优化代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward LU</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">{#
+  }主题 &mdash; {#
+  }<a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">{#
+   }NexT.Gemini v5.1.4
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </a></div>
+    </div></footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAmBMbkEUSYgRSBLWWQmfXYb-gzGzoHsz", "anmWTEkXd9g8dDplpJ6rXP13");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
