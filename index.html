@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="The bottle of wine in my heart.">
+<meta name="description" content="Problems to solve, thinkings to share, minds to fly.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="True tech area">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="True tech area">
-<meta property="og:description" content="The bottle of wine in my heart.">
+<meta property="og:description" content="Problems to solve, thinkings to share, minds to fly.">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="True tech area">
-<meta name="twitter:description" content="The bottle of wine in my heart.">
+<meta name="twitter:description" content="Problems to solve, thinkings to share, minds to fly.">
 
 
 
@@ -170,7 +170,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">I know you never ever give up until you make it.</p>
+        <p class="site-subtitle">Never be a programmer, be a problem solver.</p>
       
   </div>
 
@@ -258,6 +258,163 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/15/rethinkOfMelloc/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward LU">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="True tech area">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/15/rethinkOfMelloc/" itemprop="url">记一次因我而起的生产事故</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-15T14:48:59+08:00">
+                2019-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作/" itemprop="url" rel="index">
+                    <span itemprop="name">工作</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/03/15/rethinkOfMelloc/" class="leancloud_visitors" data-flag-title="记一次因我而起的生产事故">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在一个项目中用C语言做一个restful服务的桥接器，具体功能就是把Java端发过来的请求报文解析，再用解析出的内容调用C底层相应的接口，最后把C接口返回的信息再发给Java端。<br>测试时发现，多数接口的请求能正常接收到返回信息，但某些请求报文特别长的接口，就无法正常获取返回报文。查了代码发现是<strong>接收报文变量</strong>的长度定义过短导致程序提前退出了。我便把<strong>接收报文的变量</strong>变为了动态申请内存，申请了1MB的内存，结尾处再释放掉，这样改过之后，程序没有提前退出，却出现了段错误。查了半天，最后发现问题出在一个调试语句上，那里还是用的<strong>栈内存</strong>申请，在把最大报文长度限制变成1MB之后，加上调用底层C接口中申请的<strong>栈地址空间</strong>,超过了linux栈空间的限制，导致<strong>内存溢出</strong>了。<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/15/rethinkOfMelloc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1083,7 +1240,7 @@
               <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Edward LU">
             
               <p class="site-author-name" itemprop="name">Edward LU</p>
-              <p class="site-description motion-element" itemprop="description">The bottle of wine in my heart.</p>
+              <p class="site-description motion-element" itemprop="description">Problems to solve, thinkings to share, minds to fly.</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1093,7 +1250,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1104,7 +1261,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1115,7 +1272,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
