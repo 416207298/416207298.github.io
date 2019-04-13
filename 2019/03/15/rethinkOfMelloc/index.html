@@ -82,16 +82,16 @@
 <meta name="description" content="前言最近在一个项目中用C语言做一个restful服务的桥接器，具体功能就是把Java端发过来的请求报文解析，再用解析出的内容调用C底层相应的接口，最后把C接口返回的信息再发给Java端。测试时发现，多数接口的请求能正常接收到返回信息，但某些请求报文特别长的接口，就无法正常获取返回报文。查了代码发现是接收报文变量的长度定义过短导致程序提前退出了。我便把接收报文的变量变为了动态申请内存，申请了1MB的">
 <meta name="keywords" content="动态内存&#x2F;栈&#x2F;堆">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记一次因我而起的生产事故">
+<meta property="og:title" content="重新思考内存申请">
 <meta property="og:url" content="http://yoursite.com/2019/03/15/rethinkOfMelloc/index.html">
 <meta property="og:site_name" content="True tech area">
 <meta property="og:description" content="前言最近在一个项目中用C语言做一个restful服务的桥接器，具体功能就是把Java端发过来的请求报文解析，再用解析出的内容调用C底层相应的接口，最后把C接口返回的信息再发给Java端。测试时发现，多数接口的请求能正常接收到返回信息，但某些请求报文特别长的接口，就无法正常获取返回报文。查了代码发现是接收报文变量的长度定义过短导致程序提前退出了。我便把接收报文的变量变为了动态申请内存，申请了1MB的">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/rethinkOfMelloc/ulimit%20-a%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
 <meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/rethinkOfMelloc/limit%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
-<meta property="og:updated_time" content="2019-03-20T11:46:50.927Z">
+<meta property="og:updated_time" content="2019-04-13T08:08:30.539Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记一次因我而起的生产事故">
+<meta name="twitter:title" content="重新思考内存申请">
 <meta name="twitter:description" content="前言最近在一个项目中用C语言做一个restful服务的桥接器，具体功能就是把Java端发过来的请求报文解析，再用解析出的内容调用C底层相应的接口，最后把C接口返回的信息再发给Java端。测试时发现，多数接口的请求能正常接收到返回信息，但某些请求报文特别长的接口，就无法正常获取返回报文。查了代码发现是接收报文变量的长度定义过短导致程序提前退出了。我便把接收报文的变量变为了动态申请内存，申请了1MB的">
 <meta name="twitter:image" content="https://blog-pics.nos-eastchina1.126.net/rethinkOfMelloc/ulimit%20-a%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.jpg">
 
@@ -129,7 +129,7 @@
 
 
 
-  <title>记一次因我而起的生产事故 | True tech area</title>
+  <title>重新思考内存申请 | True tech area</title>
   
 
 
@@ -293,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">记一次因我而起的生产事故</h1>
+          <h1 class="post-title" itemprop="name headline">重新思考内存申请</h1>
         
 
         <div class="post-meta">
@@ -345,7 +345,7 @@
 
           
           
-             <span id="/2019/03/15/rethinkOfMelloc/" class="leancloud_visitors" data-flag-title="记一次因我而起的生产事故">
+             <span id="/2019/03/15/rethinkOfMelloc/" class="leancloud_visitors" data-flag-title="重新思考内存申请">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
