@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="算法,数据结构,单链表,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="为什么要说链表链表这个词想必大家都很熟悉，但在实际工作中，我发现虽然经常会用到，但如果真是让自己从头开始造轮子，真正的从零开发，却还是会有种无从下手的感觉。如果你和我一样，请继续看下去。">
+<meta name="keywords" content="算法,数据结构,单链表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你想要了解的单链表">
+<meta property="og:url" content="http://yoursite.com/2018/10/31/single-linklist/index.html">
+<meta property="og:site_name" content="My Area">
+<meta property="og:description" content="为什么要说链表链表这个词想必大家都很熟悉，但在实际工作中，我发现虽然经常会用到，但如果真是让自己从头开始造轮子，真正的从零开发，却还是会有种无从下手的感觉。如果你和我一样，请继续看下去。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/jianzhioffer13.png">
+<meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/result.png">
+<meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/jianzhioffer16.jpg">
+<meta property="og:image" content="https://blog-pics.nos-eastchina1.126.net/result16.jpg">
+<meta property="og:updated_time" content="2022-09-07T14:54:39.972Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你想要了解的单链表">
+<meta name="twitter:description" content="为什么要说链表链表这个词想必大家都很熟悉，但在实际工作中，我发现虽然经常会用到，但如果真是让自己从头开始造轮子，真正的从零开发，却还是会有种无从下手的感觉。如果你和我一样，请继续看下去。">
+<meta name="twitter:image" content="https://blog-pics.nos-eastchina1.126.net/jianzhioffer13.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/31/single-linklist/">
+
+
+
+
+
+  <title>你想要了解的单链表 | My Area</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">My Area</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay hungry, stay foolish.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/31/single-linklist/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward LU">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Area">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">你想要了解的单链表</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T16:30:52+08:00">
+                2018-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Data-Structure/" itemprop="url" rel="index">
+                    <span itemprop="name">Data Structure</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/31/single-linklist/" class="leancloud_visitors" data-flag-title="你想要了解的单链表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="为什么要说链表"><a href="#为什么要说链表" class="headerlink" title="为什么要说链表"></a>为什么要说链表</h2><p>链表这个词想必大家都很熟悉，但在实际工作中，我发现虽然经常会用到，但如果真是让自己从头开始造轮子，真正的从零开发，却还是会有种无从下手的感觉。如果你和我一样，请继续看下去。<br><a id="more"></a><br>本文主要会讲链表的创建，销毁和遍历等链表的基本操作，并以几道面试题为例来做更具体的说明。</p>
+<h2 id="开始创建链表"><a href="#开始创建链表" class="headerlink" title="开始创建链表"></a>开始创建链表</h2><p>关于链表和数组的区别与各自的优缺点在此就不细说了，随便网上一抓一大把，今天主要弄些实在的，下面先从如何创建一个链表开始。<br>链表说白了就是从一个头指针开始，依次往后顺延连接的一个指针链。所以想获取一个链表只需要知道它的头指针即可，下面的是创建一个链表的代码。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> m_value;</span><br><span class="line">    ListNode *p_next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x): m_value(x), p_next(<span class="literal">NULL</span>) &#123; &#125;</span><br><span class="line">&#125;Link;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 根据n个元素的数组arr创建一个链表，并返回链表头 */</span></span><br><span class="line"><span class="function">Link *<span class="title">createALinklist</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    Link *head = <span class="keyword">new</span> Link(arr[<span class="number">0</span>]);</span><br><span class="line">    Link *cur_node = head;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        cur_node-&gt;p_next = <span class="keyword">new</span> Link(arr[i]);</span><br><span class="line">        cur_node = cur_node-&gt;p_next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="遍历链表"><a href="#遍历链表" class="headerlink" title="遍历链表"></a>遍历链表</h2><p>知道了头指针，很方便地就可以遍历整个链表内容；<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 打印以head为头的链表节点信息 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traverseList</span><span class="params">(Link *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Link *cur_node = head;</span><br><span class="line">        <span class="keyword">for</span> (; cur_node != <span class="literal">NULL</span>; cur_node = cur_node-&gt;p_next)</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; cur_node-&gt;m_value &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="销毁链表内容"><a href="#销毁链表内容" class="headerlink" title="销毁链表内容"></a>销毁链表内容</h2><p>在释放链表空间时要注意一个顺序问题，因为如果释放操作在指针指向下一个节点之前，那么就无法找到接下来的节点；故为了保证能正确释放，需要用到一个新指针，保存当前节点的位置。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 销毁以head为头的链表空间 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">destoryALinklist</span><span class="params">(Link *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    Link *cur_node = head;</span><br><span class="line">    <span class="keyword">while</span> (cur_node != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Link *delNode = cur_node;</span><br><span class="line">        cur_node = cur_node-&gt;p_next;  <span class="comment">// 要注意删除前要先将当前节点指针指向下一个位置</span></span><br><span class="line">        <span class="keyword">delete</span> delNode;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="添加链表节点"><a href="#添加链表节点" class="headerlink" title="添加链表节点"></a>添加链表节点</h2><p>在链表的结尾添加一个新节点，这也属于链表的基本操作之一。<br>但需要注意的是：</p>
+<ul>
+<li>链表为空时，要直接把头节点指向新节点；</li>
+<li>要想在函数内部改变指针本身，需要用到二级指针</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 在链表结尾添加一个节点 */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">addOneNodeToTail</span><span class="params">(<span class="keyword">int</span> item, Link **head)</span>  <span class="comment">// **是为了要改变head指向的地址</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Link *cur = *head;</span><br><span class="line">    Link *pnew = <span class="keyword">new</span> Link(item);</span><br><span class="line">    <span class="keyword">if</span> (pnew == <span class="literal">NULL</span>)  <span class="comment">// 内存申请失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cur == <span class="literal">NULL</span>)  <span class="comment">// 链表为空时</span></span><br><span class="line">        *head = pnew;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (cur-&gt;p_next != <span class="literal">NULL</span>)</span><br><span class="line">            cur = cur-&gt;p_next;</span><br><span class="line">        cur-&gt;p_next = pnew;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="面试题：删除链表节点"><a href="#面试题：删除链表节点" class="headerlink" title="面试题：删除链表节点"></a>面试题：删除链表节点</h2><p><img src="https://blog-pics.nos-eastchina1.126.net/jianzhioffer13.png" alt="面试题13"></p>
+<h3 id="常规删除节点的方法"><a href="#常规删除节点的方法" class="headerlink" title="常规删除节点的方法"></a>常规删除节点的方法</h3><p>要想删除链表的一个节点，首先要遍历找到前一个节点的位置，然后再删除该节点；<br>如有链表<code>a--b--c--d--null</code>，要删除c节点，则需要遍历到c的前一个节点b，把b的next指针指向d，再释放c，即完成了删除操作；<br>但这样有n个节点的时间复杂度是O(n)，不符合题目的要求；</p>
+<h3 id="符合题目要求的方法"><a href="#符合题目要求的方法" class="headerlink" title="符合题目要求的方法"></a>符合题目要求的方法</h3><p>如想删除c节点，不一定要遍历到其前一个节点b，有了c节点的指针，可以很方便地获取到其下一个节点d，而删除操作就相当于是：</p>
+<ul>
+<li>把d节点的内容赋给c节点</li>
+<li>把c节点的next指针指向d的next</li>
+</ul>
+<p>以上操作就无需遍历到c的上一个节点，此操作的时间复杂度是O(1)，符合题目的要求；<br>但需要注意两种特殊情况：</p>
+<ol>
+<li>链表只有一个节点，此时操作就变成了把头节点置null，并释放空间；</li>
+<li>要删除节点是链表的最后一个节点，由于没有后一个节点，此时需用常规删除节点的方法进行删除；</li>
+</ol>
+<p>代码如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 删除指针指向的链表节点 */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">deleteOneNode</span><span class="params">(Link *head, Link *toBeDeleted)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!head || !toBeDeleted)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// 链表只有一个节点</span></span><br><span class="line">    <span class="keyword">if</span> (head-&gt;p_next == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span> toBeDeleted;</span><br><span class="line">        toBeDeleted = <span class="literal">NULL</span>;</span><br><span class="line">        head = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 要删除的节点是尾节点</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (toBeDeleted-&gt;p_next == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Link *cur_node = head;</span><br><span class="line">        <span class="keyword">while</span> (cur_node != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (cur_node-&gt;p_next != toBeDeleted)</span><br><span class="line">                cur_node = cur_node-&gt;p_next;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                cur_node -&gt;p_next = <span class="literal">NULL</span>;</span><br><span class="line">                <span class="keyword">delete</span> toBeDeleted;</span><br><span class="line">                toBeDeleted = <span class="literal">NULL</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 删除中间的节点</span></span><br><span class="line">        toBeDeleted-&gt;m_value = toBeDeleted-&gt;p_next-&gt;m_value;</span><br><span class="line">        toBeDeleted-&gt;p_next = toBeDeleted-&gt;p_next-&gt;p_next;</span><br><span class="line">        <span class="keyword">delete</span> toBeDeleted-&gt;p_next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试程序<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr[] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">    Link *head = createALinklist(arr, <span class="number">5</span>);</span><br><span class="line">    Link *del_node = head;</span><br><span class="line">    traverseList(head);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        del_node = del_node-&gt;p_next;</span><br><span class="line">    &#125;</span><br><span class="line">    deleteOneNode(head, del_node);</span><br><span class="line">    traverseList(head);</span><br><span class="line">    destoryALinklist(head);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果<br><img src="https://blog-pics.nos-eastchina1.126.net/result.png" alt="运行结果"></p>
+<h2 id="面试题：反转链表"><a href="#面试题：反转链表" class="headerlink" title="面试题：反转链表"></a>面试题：反转链表</h2><p><img src="https://blog-pics.nos-eastchina1.126.net/jianzhioffer16.jpg" alt="面试题16"></p>
+<h3 id="反转链表的方法"><a href="#反转链表的方法" class="headerlink" title="反转链表的方法"></a>反转链表的方法</h3><p>很简单，把后一个节点的next指针指向前一个节点就好了；<br>但是需要注意：</p>
+<ul>
+<li>反转之后头节点成为尾节点，后面是<code>NULL</code>；</li>
+<li>容易出现链表的断裂；</li>
+<li>当链表为空时，要做健壮性处理。</li>
+</ul>
+<p>综上，为了链表不断裂，需要三个指针来做这件事，一个指向当前节点，一个是它的上一节点，一个是下个节点，即<code>cur，pre，next</code>。我们有了这三个指针，接下来的事就好办了，只需从头遍历链表，把每个节点的next指向pre即可。<br>代码如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Link *<span class="title">reverseList</span><span class="params">(Link *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// first input check</span></span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    Link *cur = head;  <span class="comment">// 当前节点指针</span></span><br><span class="line">    Link *next;        <span class="comment">// 下一个节点指针</span></span><br><span class="line">    Link *pre = <span class="literal">NULL</span>;  <span class="comment">// 前一个节点指针</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (cur != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (cur-&gt;p_next == <span class="literal">NULL</span>)  <span class="comment">// 到了尾节点</span></span><br><span class="line">        &#123;</span><br><span class="line">            cur-&gt;p_next = pre;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        next = cur-&gt;p_next;</span><br><span class="line">        cur-&gt;p_next = pre;</span><br><span class="line">        pre = cur;</span><br><span class="line">        cur = next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试程序代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">    Link *head = createALinklist(arr, <span class="number">5</span>);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"before reverse:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    traverseList(head);</span><br><span class="line">    Link *rhead = reverseList(head);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"after reverse:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    traverseList(rhead);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><img src="https://blog-pics.nos-eastchina1.126.net/result16.jpg" alt="反转链表运行结果"><br>当问题不好解决时，不妨多用几个指针，也许就能豁然开朗。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这些只是单链表最基础最简单的一些操作，实际工作中的链表应用会更复杂。不过只有把最基础的东西掌握好，才能向更强的地方迈进。<br>还有一些如双向链表，循环链表等可能会在后续的学习中讲到。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/单链表/" rel="tag"># 单链表</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/29/start-from-now/" rel="next" title="start from now">
+                <i class="fa fa-chevron-left"></i> start from now
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/08/CycleList/" rel="prev" title="好好的链表怎么就有环了！">
+                好好的链表怎么就有环了！ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MDg0OC8xNzM3Mw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Edward LU">
+            
+              <p class="site-author-name" itemprop="name">Edward LU</p>
+              <p class="site-description motion-element" itemprop="description">Don't be a programmer, be a problem solver.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要说链表"><span class="nav-number">1.</span> <span class="nav-text">为什么要说链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始创建链表"><span class="nav-number">2.</span> <span class="nav-text">开始创建链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遍历链表"><span class="nav-number">3.</span> <span class="nav-text">遍历链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#销毁链表内容"><span class="nav-number">4.</span> <span class="nav-text">销毁链表内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加链表节点"><span class="nav-number">5.</span> <span class="nav-text">添加链表节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面试题：删除链表节点"><span class="nav-number">6.</span> <span class="nav-text">面试题：删除链表节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常规删除节点的方法"><span class="nav-number">6.1.</span> <span class="nav-text">常规删除节点的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符合题目要求的方法"><span class="nav-number">6.2.</span> <span class="nav-text">符合题目要求的方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面试题：反转链表"><span class="nav-number">7.</span> <span class="nav-text">面试题：反转链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#反转链表的方法"><span class="nav-number">7.1.</span> <span class="nav-text">反转链表的方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward LU</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">{#
+  }主题 &mdash; {#
+  }<a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">{#
+   }NexT.Gemini v5.1.4
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </a></div>
+    </div></footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("AAmBMbkEUSYgRSBLWWQmfXYb-gzGzoHsz", "anmWTEkXd9g8dDplpJ6rXP13");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
